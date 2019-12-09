@@ -1,0 +1,7 @@
+{
+  "name": "enflora-wpa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
