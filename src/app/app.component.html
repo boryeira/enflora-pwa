@@ -1,3 +1,35 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+
+
+    <ion-menu side="start" menuId="first" >
+        <ion-header>
+          <ion-menu-toggle auto-hide="false">
+            <ion-toolbar color="light">
+              <ion-title>            
+                <ion-icon name="close"></ion-icon>
+
+              </ion-title>
+          
+            </ion-toolbar>
+          </ion-menu-toggle>
+        </ion-header>
+        <ion-content>
+            <ion-list>
+              
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/home" routerDirection="forward">Inicio</ion-item></ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" routerDirection="forward">Ordenes</ion-item></ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" disabled routerDirection="forward">Seguimientos</ion-item></ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" disabled routerDirection="forward">Eventos</ion-item></ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" disabled routerDirection="forward">Actualizar receta medica</ion-item></ion-menu-toggle>
+              </ion-list>
+        </ion-content>
+        <ion-footer>
+            <ion-button expand="full" color="danger" >Cerrar sesion</ion-button>  
+        </ion-footer>
+    </ion-menu>
+      
+      
+      <ion-router-outlet main></ion-router-outlet>
+      
+      
+  </ion-app>
