@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { MenuController,LoadingController  } from '@ionic/angular';
+import { NgForm } from '@angular/forms'
 
 import { AuthService } from './auth.service';
 
@@ -15,6 +16,7 @@ export class AuthPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private menuCtrl: MenuController,
+    private loadingCtrl: LoadingController
     ) { }
 
   ngOnInit() {
@@ -26,9 +28,19 @@ export class AuthPage implements OnInit {
   }
 
   userLogin() {
-    this.authService.login();
+
+  }
+
+  onSubmit(form: NgForm){
+    if(!form.valid){
+      return;
+    }
+    const email = form.value.email;
+    const password = form.value.password;
+    
+    this.authService.login(email,password);
     this.menuCtrl.enable(true);
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/dashboard');
 
   }
 
