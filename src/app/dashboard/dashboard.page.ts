@@ -9,10 +9,16 @@ import { AuthService } from '../auth/auth.service'
 })
 export class DashboardPage implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService,) { }
 
   ngOnInit() {
-    
+    this.authService.user.subscribe(
+      user => {
+        console.log('dashboard');
+        console.log(user);
+      }
+    );
+
   }
 
 }

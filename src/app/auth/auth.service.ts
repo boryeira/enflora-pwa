@@ -61,23 +61,25 @@ export class AuthService {
           return null;
         }
         const parsedData = JSON.parse(storasgeData.value) as {
-          user_id: string,
-          user_email: string,
-          user_full_name: string,
+          id: string,
+          email: string,
+          full_name: string,
           token_type: string,
           expires_in: string,
           access_token: string,
           refresh_token: string,
         }
         const user = new User(
-          parsedData.user_id,
-          parsedData.user_email,
-          parsedData.user_full_name,
+          parsedData.id,
+          parsedData.email,
+          parsedData.full_name,
           parsedData.token_type,
           parsedData.expires_in,
           parsedData.access_token,
           parsedData.refresh_token,
           );
+          console.log('parsedata');
+          console.log(parsedData);
           return user;
       }), tap( user =>{
           if(user){
