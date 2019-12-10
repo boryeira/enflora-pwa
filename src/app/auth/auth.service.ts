@@ -2,10 +2,22 @@
 import { environment} from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { BehaviorSubject , from} from 'rxjs';
+import { map , tap } from 'rxjs/operators';
+import { Plugins } from '@capacitor/core';
+ 
 import { User } from './user.model';
+
+export interface AuthResponseData {
+   user_id: string,
+   user_email: string,
+   user_full_name: string,
+   token_type: string,
+   expires_in: string,
+   access_token: string,
+   refresh_token: string,
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,23 +31,68 @@ export class AuthService {
     private http: HttpClient 
     ) { }
 
-  get userIsAuthenticated() {
+  public get userIsAuthenticated() {
+    console.log('entre userIsAuthenticated');
     return this._user.asObservable().pipe(map(user => {
       if(user){
-        return !!user.token;
+        console.log('user exist');
+        console.log(!!user.access_token);
+        return !!user.access_token;
       } else {
+        console.log('user not exist');
         return false;
       }
     }));
   }
-  get userId() {
-      return this._userId;
-    }
+  public get user() {
+    return this._user.asObservable().pipe(map(user => {
+      if(user){
+        return user;
+      } else {
+        return null;
+      }
+    }));
+  }
+
+  autoLogin(){
+    return from(Plugins.Storage.get({key:'user'})).pipe(map(storasgeData=>
+      {
+        if(!storasgeData || !storasgeData.value){
+          return null;
+        }
+        const parsedData = JSON.parse(storasgeData.value) as {
+          user_id: string,
+          user_email: string,
+          user_full_name: string,
+          token_type: string,
+          expires_in: string,
+          access_token: string,
+          refresh_token: string,
+        }
+        const user = new User(
+          parsedData.user_id,
+          parsedData.user_email,
+          parsedData.user_full_name,
+          parsedData.token_type,
+          parsedData.expires_in,
+          parsedData.access_token,
+          parsedData.refresh_token,
+          );
+          return user;
+      }), tap( user =>{
+          if(user){
+            this._user.next(user);
+          }
+          }
+        ),
+        map( user => {
+          return !!user;
+          }
+        )
+      )
+  }
 
   login(email:any,password:any){
-    
-
-    
     let data=JSON.stringify({
       username: email,
       password: password,
@@ -47,21 +104,29 @@ export class AuthService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json', 
       })};
-
-    return this.http.post(environment.serverUrl+"oauth/token",data,httpOptions).subscribe(
-      data => {
-        console.log(data);
-        this._userIsAuthenticated = true;
-      },
-      err => {
-        console.log(data);
-        this._userIsAuthenticated = false;
+      console.log('hola');
+    return this.http.post<AuthResponseData>(environment.serverUrl+"oauth/token",data,httpOptions).pipe(tap(
+      userData => {
+        this._user.next(
+            new User(
+            userData.user_id,
+            userData.user_email,
+            userData.user_full_name,
+            userData.token_type,
+            userData.expires_in,
+            userData.access_token,
+            userData.refresh_token,
+            ));
+            this.storeUserData(this._user.value);
       }
-      );
-
-    //this._userIsAuthenticated = true;
+    ));
   }
   logout(){
     this._user.next(null);
   }
+
+  private storeUserData(user: User) {
+    Plugins.Storage.set({key: 'user', value: JSON.stringify(user) } )
+  }
+
 }
