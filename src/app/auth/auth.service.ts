@@ -125,6 +125,7 @@ export class AuthService {
   }
   logout(){
     this._user.next(null);
+    Plugins.Storage.remove({key: 'user'});
   }
 
   private storeUserData(user: User) {
