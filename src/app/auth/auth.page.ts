@@ -25,7 +25,9 @@ export class AuthPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    console.log('auth view');
     this.menuCtrl.enable(false);
+
   }
 
   userLogin() {
@@ -36,26 +38,29 @@ export class AuthPage implements OnInit {
     if(!form.valid){
       return;
     }
-    const email = form.value.email;
-    const password = form.value.password;
-    let authObs: Observable<AuthResponseData>;
-    
-    authObs = this.authService.login(email,password);
-    authObs.subscribe(
-      resData => {
-        console.log('sii');
-        console.log(resData);
-        this.menuCtrl.enable(true);
-        this.router.navigateByUrl('/dashboard');
-      },
-      err => {
 
+    this.loadingCtrl.create({keyboardClose: true,message: 'Validando credenciales...'}).then(
+      loading => {
+        loading.present();
+        const email = form.value.email;
+        const password = form.value.password;
+        let authObs: Observable<AuthResponseData>;
+        
+        authObs = this.authService.login(email,password);
+        authObs.subscribe(
+          resData => {
+            console.log('sii validando');
+            console.log(resData);
+            this.menuCtrl.enable(true);
+            this.router.navigateByUrl('/dashboard');
+            loading.dismiss();
+          },
+          err => {
+            loading.dismiss();
+          }
+        );
       }
-
     );
-
-
-
   }
 
 }

@@ -5,9 +5,12 @@
         <ion-header>
           <ion-menu-toggle auto-hide="false">
             <ion-toolbar color="light">
-              <ion-title>            
-                <ion-icon name="close"></ion-icon>
-
+              <ion-title>
+                  <ion-buttons slot="start">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-buttons>
+                
+                <img width=110 src="assets/img/enflora.png" alt="enflora">       
               </ion-title>
           
             </ion-toolbar>
@@ -16,8 +19,8 @@
         <ion-content>
             <ion-list>
               
-                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/home" routerDirection="forward">Inicio</ion-item></ion-menu-toggle>
-                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" routerDirection="forward">Ordenes</ion-item></ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/dashboard" routerDirection="forward">Inicio</ion-item></ion-menu-toggle>
+                <ion-menu-toggle auto-hide="false"><ion-item routerLink="/products" routerDirection="forward">Productos</ion-item></ion-menu-toggle>
                 <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" disabled routerDirection="forward">Seguimientos</ion-item></ion-menu-toggle>
                 <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" disabled routerDirection="forward">Eventos</ion-item></ion-menu-toggle>
                 <ion-menu-toggle auto-hide="false"><ion-item routerLink="/" disabled routerDirection="forward">Actualizar receta medica</ion-item></ion-menu-toggle>
