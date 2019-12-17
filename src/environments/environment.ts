@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://enflora-api.test/',
+  serverUrl: 'https://api.enfloraclub.cl/',
   apiKey: 'RA5STOWQufyL2TsVnAseUKQVWNbKGHJJdIoxHqx8'
 };
 
