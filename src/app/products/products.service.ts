@@ -43,8 +43,7 @@ export interface ProductResponseData {
 })
 export class ProductsService {
   private _products = new BehaviorSubject<Product[]>(null); 
-  private productList:Array<Product>;
-  private productGlobal:Array<Product>;
+  private productList:Array<Product> = [];
 
   constructor(
     private http: HttpClient,
@@ -70,15 +69,12 @@ export class ProductsService {
   //    }));
   // }  
 
-  fetchProducts(page:number){
+  fetchProducts(){
     return this.authService.user.pipe(switchMap(
       user => {
-        console.log('fetching page ' +page);
-        return this.http.get(environment.serverUrl+'api/products?page=' +page,{ headers:{Authorization: 'Bearer ' + user.access_token}}).pipe(
+        return this.http.get(environment.serverUrl+'api/products/actives',{ headers:{Authorization: 'Bearer ' + user.access_token}}).pipe(
           map( resData => {
-            this.productList = [];
             resData['data'].forEach(element => {
-
               const product = new Product(
                 element['id'],
                 element['name'],
@@ -88,9 +84,8 @@ export class ProductsService {
               this.productList.push(product);
             
             });
-            this.productGlobal.concat(this.productList);
-            this._products.next(this.productGlobal);
-            
+            this._products.next(this.productList);
+           
           }
         ));
       }
