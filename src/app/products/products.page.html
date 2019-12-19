@@ -9,25 +9,57 @@
 </ion-header>
 
 
+
 <ion-content>
-  <ion-card *ngFor="let product of productList">
-    <img src="./madison.jpg" />
-    <ion-card-header>
-      <ion-card-subtitle>tipe</ion-card-subtitle>
-      <ion-card-title>{{product.name}}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
-    </ion-card-content>
-  </ion-card>
+  <form id=ngForm #orderform="ngForm" (ngSubmit)="onSubmit(orderform)">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-lg="3" size-md="4" size-sm="6"  size-xs="12" *ngFor="let product of productList" >
+        <ion-card >
+          <img src="{{product.img}}" />
+          <ion-card-header>
+            <ion-card-subtitle>tipe</ion-card-subtitle>
+            <ion-card-title>{{product.name}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Founded in 1829 on an isthmus between Lake Monona and Lake Mendota</p>
+
+
+            <ion-item>
+              <ion-label position="stacked">Cantidad</ion-label>
+              <ion-input
+              input-mode="number"
+              min="0" 
+              type="number"
+              clear-input="true"
+              name="{{product.id}}" 
+              ngModel
+              
+              ></ion-input>
+            </ion-item>
+
+          </ion-card-content>
+          
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</form>
 </ion-content>
 
-<ion-footer no-border >
+<ion-footer no-border  no-padding>
   <ion-toolbar transparent>
     <ion-button 
     color="primary" 
     expand="block" 
+    type="submit"
+    form="ngForm" 
+    (click)="orderform.ngSubmit.emit()"
+    [disabled]="!orderform.valid"
     >Generar pedido
   </ion-button>
   </ion-toolbar>
 </ion-footer>
+
+

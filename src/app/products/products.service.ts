@@ -12,28 +12,28 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Product } from './product.model';
 
-export interface ProductResponseData {
-  ['data'] : {
-    'id': string, 
-    'name': string,
-    'img': string,
-    'value': string,
-  } ,
-  ['meta'] : {
-    ['pagination']: {
-      'count': number,
-      'current_page': number,
-      ['links']: {
-        next: string
-      }
-      'per_page': number,
-      'total': number,
-      'total_pages': number,
-    }, 
+// export interface ProductResponseData {
+//   ['data'] : {
+//     'id': string, 
+//     'name': string,
+//     'img': string,
+//     'value': string,
+//   } ,
+//   ['meta'] : {
+//     ['pagination']: {
+//       'count': number,
+//       'current_page': number,
+//       ['links']: {
+//         next: string
+//       }
+//       'per_page': number,
+//       'total': number,
+//       'total_pages': number,
+//     }, 
 
-  }
+//   }
 
-}
+// }
 
 
 
