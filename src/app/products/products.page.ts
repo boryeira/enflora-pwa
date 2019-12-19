@@ -51,7 +51,8 @@ export class ProductsPage implements OnInit {
 
     this.ordersService.addOrder(this.items).subscribe(
       response => {
-        console.log(response);
+        console.log(response['data']);
+        
       },
       err => {
         console.log(err);
