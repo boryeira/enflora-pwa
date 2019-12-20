@@ -9,7 +9,7 @@ const routes: Routes = [
     component: OrdersPage
   },
   {
-    path: 'show/:id',
+    path: '/:id',
     loadChildren: () => import('./show/show.module').then( m => m.ShowPageModule)
   }
 ];

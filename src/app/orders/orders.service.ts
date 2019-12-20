@@ -40,4 +40,24 @@ export class OrdersService {
       )
     );
   }
+
+  getOrder(id: any) {
+
+    return this.authService.user.pipe(
+      switchMap(
+        user => {
+          const httpOptions = {
+            headers: new HttpHeaders({
+              'Authorization': 'Bearer ' + user.access_token,
+              'Content-Type': 'application/json'
+            })
+          };
+          return this.http.get(
+            environment.serverUrl + 'api/orders/' + id
+          );
+        }
+      )
+    );
+  }
+  
 }
