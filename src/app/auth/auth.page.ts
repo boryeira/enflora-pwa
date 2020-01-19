@@ -27,7 +27,10 @@ export class AuthPage implements OnInit {
   ionViewWillEnter() {
     console.log('auth view');
     this.menuCtrl.enable(false);
-
+    if(this.authService.userIsAuthenticated){
+      this.menuCtrl.enable(true);
+      this.router.navigateByUrl('/dashboard');
+    }
   }
 
   userLogin() {

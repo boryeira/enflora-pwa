@@ -1,6 +1,12 @@
 export class Order {
     constructor(
-        public items: Array<Item>,
+        public id: string,
+        public amount: string,
+        public quantity: string,
+        public deliveryDate: string,
+        public payDate: string,
+        
+       // public items: Array<Item>,
     ) {}
 }
 

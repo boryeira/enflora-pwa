@@ -24,11 +24,11 @@ export class ProductsPage implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.productService.fetchProducts().subscribe();
+    // this.productService.fetchProducts().subscribe();
   }
 
   ionViewWillEnter() {
-    // this.productService.fetchProducts(this.page).subscribe();
+    this.productService.fetchProducts().subscribe();
     this.productService.products.subscribe(products => {
       console.log('entre porductosa');
       console.log(products);
@@ -52,6 +52,7 @@ export class ProductsPage implements OnInit {
     this.ordersService.addOrder(this.items).subscribe(
       response => {
         console.log(response['data']);
+        
         
       },
       err => {

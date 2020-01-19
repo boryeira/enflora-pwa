@@ -2,8 +2,8 @@
 import { environment } from '../../environments/environment';
 
 //imports
-import { Injectable, ɵCodegenComponentFactoryResolver } from '@angular/core';
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { Injectable} from '@angular/core';
+import { HttpClient} from '@angular/common/http';
 import { map , tap, switchMap, take } from 'rxjs/operators';
 
 
@@ -11,32 +11,6 @@ import { AuthService } from '../auth/auth.service'
 import { BehaviorSubject } from 'rxjs';
 
 import { Product } from './product.model';
-
-// export interface ProductResponseData {
-//   ['data'] : {
-//     'id': string, 
-//     'name': string,
-//     'img': string,
-//     'value': string,
-//   } ,
-//   ['meta'] : {
-//     ['pagination']: {
-//       'count': number,
-//       'current_page': number,
-//       ['links']: {
-//         next: string
-//       }
-//       'per_page': number,
-//       'total': number,
-//       'total_pages': number,
-//     }, 
-
-//   }
-
-// }
-
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +33,7 @@ export class ProductsService {
         }
       }
     ));
-  }  
+  }
 
   // getProduct(id: string ) {
   //  return this.products.pipe(

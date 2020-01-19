@@ -34,8 +34,8 @@ export class AuthService {
     return this._user.asObservable().pipe(
       map(user => {
         if (user) {
-          console.log("user exist");
-          console.log(!!user.access_token);
+          // console.log("user exist");
+          // console.log(!!user.access_token);
           return !!user.access_token;
         } else {
           console.log("user not exist");
@@ -81,7 +81,7 @@ export class AuthService {
           parsedData.refresh_token
         );
         console.log("parsedata");
-        console.log(parsedData);
+        // console.log(parsedData);
         return user;
       }),
       tap(user => {

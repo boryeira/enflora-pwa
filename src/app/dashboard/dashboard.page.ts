@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Order } from '../orders/order.model';
 
-import { AuthService } from '../auth/auth.service'
+import { OrdersService } from '../orders/orders.service'
 
 @Component({
   selector: 'app-dashboard',
@@ -8,17 +9,23 @@ import { AuthService } from '../auth/auth.service'
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+  orderList: Array<Order> = [];
 
-  constructor(private authService: AuthService,) { }
+  constructor(
+    private ordersService: OrdersService
+    ) { }
 
   ngOnInit() {
-    this.authService.user.subscribe(
-      user => {
-        console.log('dashboard');
-        console.log(user);
-      }
-    );
+    this.ordersService.fetchActiveOrders().subscribe();
+  }
 
+  ionViewWillEnter() {
+    
+    this.ordersService.activeOrders.subscribe(orders => {
+    this.orderList = orders;
+    console.log('entre lista ordenes');
+    console.log(this.orderList);
+    });
   }
 
 }
