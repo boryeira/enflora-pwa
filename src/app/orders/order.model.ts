@@ -3,17 +3,29 @@ export class Order {
         public id: string,
         public amount: string,
         public quantity: string,
-        public deliveryDate: string,
         public payDate: string,
-        
-       // public items: Array<Item>,
+        public deliveryDate: string,
+        public status: Status,
+        // public items: [Array<Item>],
     ) {}
 }
 
 export class Item  {
     constructor(
         public  id: string,
-        public  quantity: any,
+        public  name: string,
+        public  amount: string,
+        public  quantity: string,
+        public  img: string,
+    ) {}
+
+}
+
+export class Status  {
+    constructor(
+        public  id: string,
+        public  css: string,
+        public  client: string,
     ) {}
 
 }

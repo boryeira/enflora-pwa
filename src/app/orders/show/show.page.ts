@@ -11,7 +11,9 @@ import { OrdersService } from '../orders.service';
 })
 export class ShowPage implements OnInit {
 
-  id:any;
+  id: any;
+  order: Order;
+  items: Array<Item>;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -24,15 +26,28 @@ export class ShowPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.route.paramMap.subscribe(params => {
-      this.ordersService.getOrder(this.id).subscribe(
+      this.ordersService.getOrder(params.get('id')).subscribe(
         orderResponse => {
-          console.log(orderResponse);
+          this.order = orderResponse;
         }
-      )
+      );
+      this.ordersService.getOrderItems(params.get('id')).subscribe(
+        orderItemsResponse => {
+          this.items = orderItemsResponse;
+        }
+      );
 
     })
+  }
+  destroy(){
+
+  }
+
+  orderPay(){
+    this.route.paramMap.subscribe(params => {
+     
+    });
   }
 
 }

@@ -11,7 +11,12 @@ const routes: Routes = [
   {
     path: ':id',
     loadChildren: () => import('./show/show.module').then( m => m.ShowPageModule)
+  },
+  {
+    path: ':id/flow',
+    loadChildren: () => import('./flow/flow.module').then( m => m.FlowPageModule)
   }
+
 ];
 
 @NgModule({

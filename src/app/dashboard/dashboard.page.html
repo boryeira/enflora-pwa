@@ -17,14 +17,12 @@
           </ion-list-header>
           <ion-item *ngFor="let order of orderList" [routerLink]="'/orders/'+order.id" routerDirection="forward">
             <ion-label>
-              <!-- <ion-text slot="start" [color]="order.status.color">
-              <h3>{{order.status.text}}</h3>
-                <p *ngIf="order.status.id == 2">{{order.amount}}</p>
-                <p *ngIf="order.status.id == 3">{{order.payDate}}</p>
-              </ion-text>  -->
-              <ion-text slot="start" >
-                <h3>{{order.amount}}</h3>
-              </ion-text>
+              <ion-text slot="start" [color]="order.status.css">
+              <h3>{{order.status.client}}</h3>
+                <p *ngIf="order.status.id == '2'">{{order.amount}}</p>
+                <p *ngIf="order.status.id == '3'">{{order.payDate}}</p>
+              </ion-text> 
+
             </ion-label>
             
             <ion-icon  slot="end"  name="arrow-forward"></ion-icon>
@@ -37,3 +35,6 @@
 
 </ion-content>
 
+<ion-footer>
+  <ion-button  routerLink="/products" routerDirection="forward" expand="full" color="tertiary">Nuevo Pedido</ion-button>
+</ion-footer>

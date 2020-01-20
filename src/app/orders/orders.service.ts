@@ -4,7 +4,7 @@ import { environment } from "../../environments/environment";
 import { Injectable } from '@angular/core';
 import { map , tap, switchMap, take } from 'rxjs/operators';
 
-import { Order , Item } from './order.model';
+import { Order , Item , Status} from './order.model';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 
@@ -16,8 +16,9 @@ import { AuthService } from '../auth/auth.service';
 
 export class OrdersService {
   private _orders = new BehaviorSubject<Order[]>(null); 
-  private _activeOrders = new BehaviorSubject<Order[]>(null); 
+  private _activeOrders = new BehaviorSubject<Order[]>(null);
   private orderList: Array<Order> = [];
+  private orderItemsList: Array<Item> = [];
   private activeOrderList: Array<Order> = [];
 
   constructor(
@@ -38,7 +39,6 @@ export class OrdersService {
     }
 
     get activeOrders() {
-      this.activeOrderList = [];
       return this._activeOrders.asObservable().pipe(map(
         orders => {
           if(orders) {
@@ -49,6 +49,8 @@ export class OrdersService {
         }
       ));
     }
+
+
 
     fetchActiveOrders(){
       return this.authService.user.pipe(switchMap(
@@ -63,7 +65,11 @@ export class OrdersService {
                   element['amount'],
                   element['quantity'],
                   element['deliveryDate'],
-                  element['payDate']
+                  element['payDate'],
+                  new Status(
+                    element['status']['id'],
+                    element['status']['css'],
+                    element['status']['client']),
                 );
                 this.activeOrderList.push(order);
               
@@ -122,10 +128,72 @@ export class OrdersService {
           };
           return this.http.get(
             environment.serverUrl + 'api/orders/' + id, httpOptions
-          );
+          ).pipe(map( Response => {
+            console.log('entre map');
+            console.log(Response);
+            return new Order(
+              Response['data']['id'],
+              Response['data']['amount'],
+              Response['data']['quantity'],
+              Response['data']['deliveryDate'],
+              Response['data']['payDate'],
+              new Status(
+                Response['data']['status']['id'],
+                Response['data']['status']['css'],
+                Response['data']['status']['client']),
+            );
+          }));
         }
-      )
+     )
     );
   }
-  
+
+  getOrderItems(id: any) {
+    this.orderItemsList = [];
+    return this.authService.user.pipe(
+      switchMap(
+        user => {
+          const httpOptions = {
+            headers: new HttpHeaders({
+              Authorization: 'Bearer ' + user.access_token
+
+            })
+          };
+          return this.http.get(
+            environment.serverUrl + 'api/orders/' + id + '/items', httpOptions
+          ).pipe(map( Response => {
+            
+            Response['data'].forEach(element => {
+              const item = new Item(
+                element['id'],
+                element['name'],
+                element['amount'],
+                element['quantity'],
+                element['img']
+              );
+              this.orderItemsList.push(item);
+            
+            });
+            return this.orderItemsList;
+          }));
+        }
+     )
+    );
+  }
+
+  pay(id: any){
+    // return this.authService.user.pipe(
+    //   switchMap(
+    //     user => {
+    //       const httpOptions = {
+    //         headers: new HttpHeaders({
+    //           Authorization: 'Bearer ' + user.access_token
+
+    //         })
+    //       };
+    //       return 
+    //     }
+    //   )
+    // );
+  }
 }

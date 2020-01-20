@@ -1,13 +1,90 @@
 
 <ion-header >
   <ion-toolbar color="light">
-    <ion-title>Pedido #</ion-title>
+    <img width=110 src="assets/img/enflora.png" alt="enflora">
     <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
+      <ion-back-button mode="md" ></ion-back-button> 
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content >
-  holas
+  <ion-grid>
+    <ion-row>
+
+      <ion-col size-xs="12" size-sm="12"  size-md="8" size-lg="6" offset-md="2" offset-lg="3" >
+        <ion-card>
+          <ion-card-header>
+            
+
+              <ion-toolbar>
+                <ion-card-title >
+              
+                  Pedido #{{order?.id}}
+
+                </ion-card-title>
+              <ion-card-subtitle  [color]="order?.status?.css" >{{order?.status?.client}}</ion-card-subtitle>
+                <ion-button (click)="destroy()" color="danger" slot="end"><ion-icon name="trash"></ion-icon></ion-button>
+              </ion-toolbar>
+
+            
+           
+          </ion-card-header>
+          <ion-card-content>
+
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="order?.status?.id == '3'" color="success">
+          <ion-card-content>
+            <p>Uno de nuestros miembros se comunicara con usted para coordinar la entrega.</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-list fullscreen class="ion-padding">
+          <ion-list-header>
+            Detalle
+          </ion-list-header>
+      
+    
+          <ion-item *ngFor="let item of items" >
+            <ion-avatar slot="start">
+                <img src="{{item.img}}" >
+            </ion-avatar>
+            <ion-label>
+              <h5>{{item.name}}</h5>
+            </ion-label>
+            <ion-note slot="end" >{{item.amount}}</ion-note>
+          </ion-item>
+          <ion-item>
+            
+            <ion-note slot="end"  ><strong>Total: {{order?.amount}}</strong></ion-note>
+          </ion-item>
+        </ion-list>
+        <ion-card>
+          <ion-card-content>
+            <ion-card-header>
+              <ion-card-title >Formas de pago</ion-card-title>
+              
+            </ion-card-header>
+            <ion-row>
+              <ion-col size-xs="6" size-sm="3" size-md="2"><img src="https://www.flow.cl/images/logos/webpay.png" class="logoWebpay" alt="logoWebpay" width="100"></ion-col>
+              <ion-col size-xs="6" size-sm="3" size-md="2"><img src="https://www.flow.cl/images/logos/servipag.png" class="logoWebpay" alt="logoServipag" width="100"></ion-col>
+              <ion-col size-xs="6" size-sm="3" size-md="2"><img src="https://www.flow.cl/images/medios-de-pago/onepay/onepay.png" class="logoWebpay" alt="logoOnepay" width="100"></ion-col>
+              <ion-col size-xs="6" size-sm="3" size-md="2"><img src="https://www.flow.cl/images/logos/multicaja.png" class="logoWebpay" alt="logoMulticaja" width="100"></ion-col>
+              <ion-col size-xs="6" size-sm="3" size-md="2"><img src="https://www.flow.cl/images/medios-de-pago/cryptocompra/cryptocompra.png" class="logoWebpay" alt="logoCryptocompra" width="100"></ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+        <ion-button (click)="orderPay()"  expand="full" color="success"  class="hidden-xs-down">PAGAR</ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+
+  </ion-grid>
+
 </ion-content>
+
+<ion-footer *ngIf="order?.status?.id == '2' " class="hidden-sm-up">
+  <ion-button  (click)="orderPay()" expand="full" color="success">PAGAR</ion-button>
+</ion-footer>

@@ -35,15 +35,9 @@ export class ProductsService {
     ));
   }
 
-  // getProduct(id: string ) {
-  //  return this.products.pipe(
-  //    take(1),
-  //    map(products => {
-  //     return {...products.find(p =>{p => p.id === id})};
-  //    }));
-  // }  
 
   fetchProducts(){
+    this.productList = [];
     return this.authService.user.pipe(switchMap(
       user => {
         return this.http.get(environment.serverUrl+'api/products/actives',{ headers:{Authorization: 'Bearer ' + user.access_token}}).pipe(
