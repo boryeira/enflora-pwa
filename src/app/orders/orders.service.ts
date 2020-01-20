@@ -182,18 +182,43 @@ export class OrdersService {
   }
 
   pay(id: any){
-    // return this.authService.user.pipe(
-    //   switchMap(
-    //     user => {
-    //       const httpOptions = {
-    //         headers: new HttpHeaders({
-    //           Authorization: 'Bearer ' + user.access_token
+    return this.authService.user.pipe(
+      switchMap(
+        user => {
+          const httpOptions = {
+            headers: new HttpHeaders({
+              Authorization: 'Bearer ' + user.access_token
 
-    //         })
-    //       };
-    //       return 
-    //     }
-    //   )
-    // );
+            })
+          };
+          return this.http.get(environment.serverUrl + 'api/orders/' + id + '/pay', httpOptions)
+          .pipe(map((result: any) => { 
+            return result['url'];
+          }));
+        }
+      )
+    );
+  }
+  destroy(id: any){
+    return this.authService.user.pipe(
+      switchMap(
+        user => {
+          const httpOptions = {
+            headers: new HttpHeaders({
+              Authorization: 'Bearer ' + user.access_token
+
+            })
+          };
+          return this.http.delete(environment.serverUrl + 'api/orders/' + id, httpOptions)
+          .pipe(map((result: any) => { 
+            if(result['data'] === 'deleted'){
+              return true;
+            } else {
+              return false;
+            }
+          }));
+        }
+      )
+    );
   }
 }

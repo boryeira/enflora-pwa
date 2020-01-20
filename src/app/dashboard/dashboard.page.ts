@@ -16,11 +16,11 @@ export class DashboardPage implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.ordersService.fetchActiveOrders().subscribe();
+    
   }
 
   ionViewWillEnter() {
-    
+    this.ordersService.fetchActiveOrders().subscribe();
     this.ordersService.activeOrders.subscribe(orders => {
     this.orderList = orders;
     console.log('entre lista ordenes');

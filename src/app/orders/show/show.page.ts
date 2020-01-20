@@ -3,6 +3,7 @@ import { Router, ActivatedRoute  } from '@angular/router';
 
 import { Order, Item } from '../order.model';
 import { OrdersService } from '../orders.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-show',
@@ -18,7 +19,8 @@ export class ShowPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private ordersService: OrdersService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private iab: InAppBrowser
 
   ) { }
 
@@ -40,14 +42,30 @@ export class ShowPage implements OnInit {
 
     })
   }
-  destroy(){
+  destroy(id:string){
+      this.ordersService.destroy(id).subscribe(
+        destroyResponse => {
+         if(destroyResponse){
+           this.router.navigateByUrl('/');
+         }
+        }
+      );
 
   }
 
-  orderPay(){
-    this.route.paramMap.subscribe(params => {
-     
-    });
+  pay(id: string){
+    this.ordersService.pay(id).subscribe(
+      payResponse => {
+        var ref = this.iab.create(payResponse, '_blank');
+        ref.show();
+        ref.on('loadstart').subscribe(event =>{
+          console.log('entro!');
+        });
+        ref.on('loadstop').subscribe(event =>{
+          console.log('fin!');
+        });
+      }
+    );
   }
 
 }
