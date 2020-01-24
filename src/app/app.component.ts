@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private statusBar: StatusBar,
     private authservice: AuthService,
     private router: Router,
+    private swUpdate: SwUpdate,
+    private alertController: AlertController,
   ) {
     this.initializeApp();
   }
@@ -30,8 +33,35 @@ export class AppComponent implements OnInit, OnDestroy {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
+      this.checkUpdate();
+      setInterval(() => {
+        this.swUpdate.checkForUpdate();
+      } , 21600);
     });
+  }
+
+  checkUpdate() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(async () => {
+        const alert = await this.alertController.create({
+          header: `App update!`,
+          message: `Newer version of the app is available. It's a quick refresh away!`,
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+            }, {
+              text: 'Refresh',
+              handler: () => {
+                window.location.reload();
+              },
+            },
+          ],
+        });
+        await alert.present();
+      });
+    }
   }
 
   ngOnInit(){
