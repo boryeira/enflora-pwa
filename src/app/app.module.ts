@@ -15,6 +15,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
+ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production });
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
