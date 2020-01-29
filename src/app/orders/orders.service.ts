@@ -53,6 +53,7 @@ export class OrdersService {
 
 
     fetchActiveOrders(){
+      this.activeOrderList = [];
       return this.authService.user.pipe(switchMap(
         user => {
           return this.http.get(environment.serverUrl+'api/orders/actives',{ headers:{Authorization: 'Bearer ' + user.access_token}}).pipe(
