@@ -4,7 +4,7 @@ import { environment } from "../../environments/environment";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { BehaviorSubject, from } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { map, tap, switchMap } from "rxjs/operators";
 import { Plugins } from "@capacitor/core";
 
 import { User } from "./user.model";
@@ -135,6 +135,26 @@ export class AuthService {
   logout() {
     this._user.next(null);
     Plugins.Storage.remove({ key: "user" });
+  }
+
+  setFcm(token:any) {
+    return this.user.pipe(
+      switchMap(
+        user => {
+          const httpOptions = {
+            headers: new HttpHeaders({
+              'Authorization': 'Bearer ' + user.access_token,
+              'Content-Type': 'application/json'
+            })
+          };
+          return this.http.post(
+            environment.serverUrl + 'api/fcm/token',
+            { fcmtoken: token },
+            httpOptions
+          );
+        }
+      )
+    );
   }
 
   private storeUserData(user: User) {

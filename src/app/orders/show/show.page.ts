@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute  } from '@angular/router';
-import { interval } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { MenuController, LoadingController  } from '@ionic/angular';
@@ -72,14 +73,19 @@ export class ShowPage implements OnInit {
         this.ordersService.pay(id).subscribe(
           payResponse => {
             console.log(payResponse);
-            const browser = this.iab.create('https://ionicframework.com/', '_blank');
-            this.payConfirm = interval(1000).subscribe(x => {
-              if(x >= 5){
-                this.ionViewDidEnter();
-              } else {
-                console.log(x);
+            const browser = this.iab.create(payResponse, '_blank');
+ 
+            const numbers = interval(10000);
+ 
+            const takeFourNumbers = numbers.pipe(take(30));
+            takeFourNumbers.subscribe(x => {
+              this.confirmPay(id);
+              console.log(x);
+              if(+x >= 9){
+                loading.dismiss();
               }
             });
+
           }
         );
         // browser.on('loadstart').subscribe(event => {
@@ -99,15 +105,16 @@ export class ShowPage implements OnInit {
   }
 
   confirmPay(id: string){
-    return this.ordersService.getOrder(id).subscribe(
+    this.ordersService.getOrder(id).subscribe(
       orderResponse => {
         console.log(+orderResponse.status.id);
         if (+orderResponse.status.id >= 3) {
-          return true;
+          console.log('true');
+          this.loadingCtrl.dismiss();
+          this.ionViewDidEnter();
         } else {
-          return false;
+          console.log('false');
         }
-        return false;
       }
     );
   }
