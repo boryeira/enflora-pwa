@@ -1,0 +1,46 @@
+<ion-header >
+  <ion-toolbar color="light">
+    <img width=110 src="assets/img/enflora.png" alt="enflora" routerLink="/dashboard">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="dashboard"></ion-back-button> 
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center" *ngIf="prescription == null">
+      <ion-col  size-md="6"  size-lg="4" >
+        <ion-card (click)="goRecetaCannabica()" >
+          <ion-card-content  >
+            <ion-grid>
+              <ion-row >
+                
+                <ion-col><ion-img  src="assets/img/recetacannabica.jpg" style="width: 60px;" ></ion-img></ion-col>
+                <ion-col><h1>Obten tu Receta Cannabica</h1></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+        <ion-card  >
+          <!-- <ion-card-header><ion-card-title>Sube tu receta </ion-card-title> </ion-card-header> -->
+          <ion-card-content>
+            <ion-list inset padding>
+              <ion-item>
+                  <input type="file" (change)="onFileChanged($event)">
+                  <ion-button item-right (click)="uploadPrescription()" >subir</ion-button>
+              </ion-item>
+            </ion-list>
+            
+            
+          </ion-card-content>
+        </ion-card>
+
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
+ 
+</ion-content>

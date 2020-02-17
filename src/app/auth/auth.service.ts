@@ -1,3 +1,4 @@
+import { PrescriptionsPage } from './../prescriptions/prescriptions.page';
 //env
 import { environment } from "../../environments/environment";
 //imports
@@ -160,4 +161,15 @@ export class AuthService {
   private storeUserData(user: User) {
     Plugins.Storage.set({ key: "user", value: JSON.stringify(user) });
   }
+
+  prescription(){
+
+    return this.user.pipe(switchMap(
+      user => {
+        return this.http.get(environment.serverUrl + 'api/profile/prescriptions/active',
+            { headers:{Authorization: 'Bearer ' + user.access_token}}
+          );
+      }
+    ));
+  } 
 }
