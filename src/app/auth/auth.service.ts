@@ -172,4 +172,21 @@ export class AuthService {
       }
     ));
   } 
+
+  uploadPrescription(file: File ){
+    const formData: FormData = new FormData();
+    formData.append('prescription', file);
+    return this.user.pipe(switchMap(
+      user => {
+        return this.http.post(environment.serverUrl + 'api/profile/prescriptions',
+            formData,
+            {
+              headers: {
+                        Authorization: 'Bearer ' + user.access_token
+              }
+            }
+          );
+      }
+    ));
+  }
 }

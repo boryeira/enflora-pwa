@@ -30,10 +30,6 @@ export class PrescriptionsPage implements OnInit {
   ngOnInit() {
   }
 
-  onFileChanged(event) {
-    this.prescriptionImage = event.target.files[0];
-  }
-
   ionViewWillEnter() {
     console.log('prescription');
     this.authService.prescription().subscribe( response =>{
@@ -50,8 +46,18 @@ export class PrescriptionsPage implements OnInit {
     Browser.open({ url: 'https://www.recetacannabis.cl/' });
   }
 
-  uploadPrescription() {
-    console.log(this.prescriptionImage);
+  onFileChanged(event) {
+    this.prescriptionImage = event.target.files[0];
+    this.authService.uploadPrescription(this.prescriptionImage).subscribe( response =>{
+        console.log(response['data']);
+      },
+      error => {
+        console.log(error);
+      })
   }
+
+  // uploadPrescription() {
+  //   console.log(this.prescriptionImage);
+  // }
 
 }
